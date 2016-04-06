@@ -4,27 +4,30 @@ import { connect } from 'react-redux'
 import * as actions from '../actions'
 
 import NewUser from './NewUser'
+import AllUsers from './AllUsers'
 import { addUser, deleteUser } from '../actions'
 
 export const Users = React.createClass({
 	mixins: [PureRenderMixin],
+
+	addU: function() {
+		let user = {};
+		user.forename = document.getElementById('forenameInput').value;
+		user.surname = document.getElementById('surnameInput').value;
+
+		this.props.addUser(user);
+	},
+
+	deleteU: function(index) {
+		this.props.deleteUser(index);
+	},
+
 	render: function() {
 		return <div>
 			<h1>Users</h1>
-			<NewUser handleSubmit={() => {
-				let user = {};
-				user.forename = document.getElementById('forenameInput').value;
-				user.surname = document.getElementById('surnameInput').value;;
+			<NewUser handleSubmit={this.addU} />
 
-				this.props.addUser(user);
-				
-			}} />
-			
-			{this.props.state.get('users') ?
-			 this.props.state.get('users').map((user, index) => <p key={index}>{user.get('forename')}, {user.get('surname')} <button onClick={e => {
-					this.props.deleteUser(index)
-				}} >X</button> </p>) : 
-			 null}
+			<AllUsers deleteUx={this.deleteU} users={this.props.state.users} />
 		</div>
 	}
 })

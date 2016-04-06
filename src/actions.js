@@ -13,11 +13,24 @@ export function setConnectionState(state, connected) {
 	}
 }
 
-export function setState(state) {
-	console.log("state: " + JSON.stringify(state))
+export function setCoreState(state) {
 	return {
-		type: 'SET_STATE',
+		type: 'SET_CORE_STATE',
 		state
+	}
+}
+
+export function setUsersState(state) {
+	return {
+		type: 'SET_USER_STATE',
+		state
+	}
+}
+
+export function allUsers(state) {
+	return {
+		meta: {remote: true},
+		type: 'ALL_USER'
 	}
 }
 
@@ -35,6 +48,13 @@ export function addUser(user) {
 export function deleteUser(index) {
 	return {
 		meta: {remote: true},
+		type: 'DELETE_USER',
+		user_id: index
+	}
+}
+
+export function deleteUserLocal(index) {
+	return {
 		type: 'DELETE_USER',
 		user_id: index
 	}
