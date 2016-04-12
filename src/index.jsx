@@ -8,9 +8,6 @@ import { createStore, applyMiddleware } from 'redux'
 import {Provider} from 'react-redux'
 import { rootReducer } from './reducers/rootReducer'
 
-// Immutable
-import Immutable from 'immutable'
-
 // Local
 import getClientId from './client_id'
 import App from './components/App'
@@ -29,17 +26,12 @@ const createStoreWithMiddleware = applyMiddleware(
 )(createStore)
 
 const store = createStoreWithMiddleware(rootReducer);
-store.dispatch(setClientId(getClientId()));
-
+store.dispatch(setClientId(getClientId()))
 
 socket.on('state', state => {
-	console.log("1: " + JSON.stringify(state))
-	state = objectAssign({}, store.getState(), state)
-	console.log("1: " + JSON.stringify(state))
-	store.dispatch(setCoreState(state))
-
-	store.dispatch(setUsersState(state))
-
+		state = objectAssign({}, store.getState(), state)
+		store.dispatch(setCoreState(state))
+		store.dispatch(setUsersState(state))
 	}
 );
 
