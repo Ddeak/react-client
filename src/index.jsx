@@ -6,11 +6,7 @@ import {Router, Route, hashHistory} from 'react-router'
 // Redux
 import { createStore, applyMiddleware } from 'redux'
 import {Provider} from 'react-redux'
-
-// Reducers
-import { combineReducers } from 'redux'
-import core from './reducers/core'
-import users from './reducers/users'
+import { rootReducer } from './reducers/rootReducer'
 
 // Immutable
 import Immutable from 'immutable'
@@ -32,24 +28,17 @@ const createStoreWithMiddleware = applyMiddleware(
 	remoteActionMiddleware(socket)
 )(createStore)
 
-const rootReducer = combineReducers({
-	core,
-	users
-});
-
 const store = createStoreWithMiddleware(rootReducer);
 store.dispatch(setClientId(getClientId()));
 
 
 socket.on('state', state => {
+	console.log("1: " + JSON.stringify(state))
 	state = objectAssign({}, store.getState(), state)
-	if (state.core != store.getState().core)
-		store.dispatch(setCoreState(state))
+	console.log("1: " + JSON.stringify(state))
+	store.dispatch(setCoreState(state))
 
-	var externalUsers = Immutable.List(state.users)
-
-	if (!Immutable.is(externalUsers, store.getState().users))
-		store.dispatch(setUsersState(state))
+	store.dispatch(setUsersState(state))
 
 	}
 );
